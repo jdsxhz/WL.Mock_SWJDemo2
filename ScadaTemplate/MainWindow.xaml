@@ -1,0 +1,160 @@
+<Window x:Class="ScadaTemplate.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:ScadaTemplate.Controls"
+        xmlns:behaviors="clr-namespace:ScadaTemplate.Behaviors"
+        xmlns:viewModels="clr-namespace:ScadaTemplate.ViewModels"
+        xmlns:views="clr-namespace:ScadaTemplate.Views"
+        mc:Ignorable="d"
+        Title="上位机界面模板2"
+        Width="1580"
+        Height="920"
+        MinWidth="1100"
+        MinHeight="700"
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        Background="{StaticResource ChromeDarkBrush}"
+        WindowStartupLocation="CenterScreen">
+    <Window.DataContext>
+        <viewModels:MainViewModel />
+    </Window.DataContext>
+
+    <Window.Resources>
+        <DataTemplate x:Key="OverviewTemplate">
+            <views:OverviewView />
+        </DataTemplate>
+        <DataTemplate x:Key="ParametersTemplate">
+            <views:ParametersView />
+        </DataTemplate>
+        <DataTemplate x:Key="AlarmsTemplate">
+            <views:AlarmsView />
+        </DataTemplate>
+        <DataTemplate x:Key="TrendsTemplate">
+            <views:TrendsView />
+        </DataTemplate>
+        <DataTemplate x:Key="MaintenanceTemplate">
+            <views:MaintenanceView />
+        </DataTemplate>
+        <DataTemplate x:Key="SettingsTemplate">
+            <views:SettingsView />
+        </DataTemplate>
+    </Window.Resources>
+
+    <Border BorderBrush="#2D82B6" BorderThickness="1" Background="{StaticResource GridBackgroundBrush}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="72" />
+            <RowDefinition Height="92" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0"
+                Background="{StaticResource HeaderBarBrush}"
+                BorderBrush="#184D7A"
+                BorderThickness="0,0,0,1"
+                behaviors:WindowDragBehavior.IsEnabled="True">
+            <Grid Margin="24,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="390" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="390" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Path Width="44" Height="38" Fill="{StaticResource AccentCyanBrush}" Stretch="Fill"
+                          Data="M0,0 L42,0 L20,38 L4,38 L20,11 Z" />
+                    <Rectangle Width="2" Height="44" Fill="{StaticResource AccentCyanBrush}" Margin="24,0" />
+                    <StackPanel>
+                        <TextBlock Text="xxxxx上位机监控系统" FontSize="18" FontWeight="Bold" Foreground="{StaticResource AccentCyanBrush}" />
+                        <TextBlock Text="CarSamplingSystemScada" FontSize="12" Foreground="{StaticResource AccentCyanBrush}" />
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock Text="上位机界面模板2" FontSize="25" FontWeight="Bold" HorizontalAlignment="Center" />
+                    <TextBlock Text="{Binding PageDescription}" Foreground="#83DDF1" FontSize="12" HorizontalAlignment="Center" Margin="0,4,0,0" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <controls:StatusLamp Status="{Binding SystemStateStatus}" Margin="0,0,10,0" />
+                    <TextBlock Text="{Binding SystemStateText}" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,18,0" />
+                    <Button Content="－" Command="{Binding MinimizeCommand}" Style="{StaticResource WindowControlButtonStyle}" ToolTip="最小化" />
+                    <Button Content="□" Command="{Binding ToggleMaximizeCommand}" Style="{StaticResource WindowControlButtonStyle}" ToolTip="最大化/还原" />
+                    <Button Content="退出" Command="{Binding ExitCommand}" Style="{StaticResource ExitButtonStyle}" ToolTip="退出系统" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1" Margin="24,10,24,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="52" />
+                <RowDefinition Height="40" />
+            </Grid.RowDefinitions>
+
+            <UniformGrid Columns="6">
+                <Button Content="监控总览" Command="{Binding NavigateCommand}" CommandParameter="Overview" Style="{StaticResource PrimaryNavButtonStyle}" />
+                <Button Content="参数配置" Command="{Binding NavigateCommand}" CommandParameter="Parameters" Style="{StaticResource NavButtonStyle}" />
+                <Button Content="报警记录" Command="{Binding NavigateCommand}" CommandParameter="Alarms" Style="{StaticResource NavButtonStyle}" />
+                <Button Content="趋势曲线" Command="{Binding NavigateCommand}" CommandParameter="Trends" Style="{StaticResource NavButtonStyle}" />
+                <Button Content="设备维护" Command="{Binding NavigateCommand}" CommandParameter="Maintenance" Style="{StaticResource NavButtonStyle}" />
+                <Button Content="系统设置" Command="{Binding NavigateCommand}" CommandParameter="Settings" Style="{StaticResource NavButtonStyle}" />
+            </UniformGrid>
+
+            <Grid Grid.Row="1" Margin="70,0">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="Admin" FontSize="16" FontWeight="Bold" />
+                    <TextBlock Text="欢迎登陆" Margin="24,0,0,0" Foreground="#B9DCF0" />
+                    <TextBlock Text="当前页面：" Margin="32,0,0,0" Foreground="{StaticResource AccentCyanBrush}" />
+                    <TextBlock Text="{Binding PageTitle}" Foreground="{StaticResource AccentCyanBrush}" FontWeight="Bold" />
+                    <TextBlock Text="   现在时间是：" Margin="22,0,0,0" Foreground="{StaticResource AccentCyanBrush}" />
+                    <TextBlock Text="{Binding CurrentTime}" Foreground="{StaticResource AccentCyanBrush}" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <TextBlock Text="设备：" FontWeight="Bold" />
+                    <TextBlock Text="{Binding SelectedDevice}" Foreground="{StaticResource AccentCyanBrush}" FontWeight="Bold" Margin="0,0,40,0" />
+                    <TextBlock Text="状态：" FontWeight="Bold" />
+                    <TextBlock Text="{Binding SystemStateText}" Foreground="{StaticResource AccentCyanBrush}" FontWeight="Bold" />
+                </StackPanel>
+            </Grid>
+        </Grid>
+
+        <ScrollViewer Grid.Row="2"
+                      HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalContentAlignment="Stretch"
+                      VerticalContentAlignment="Stretch"
+                      PanningMode="Both">
+        <ContentControl Content="{Binding}"
+                        MinWidth="1280"
+                        MinHeight="620"
+                        Width="{Binding RelativeSource={RelativeSource AncestorType=ScrollViewer}, Path=ViewportWidth}">
+            <ContentControl.Style>
+                <Style TargetType="ContentControl">
+                    <Setter Property="ContentTemplate" Value="{StaticResource OverviewTemplate}" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding CurrentPage}" Value="Parameters">
+                            <Setter Property="ContentTemplate" Value="{StaticResource ParametersTemplate}" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding CurrentPage}" Value="Alarms">
+                            <Setter Property="ContentTemplate" Value="{StaticResource AlarmsTemplate}" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding CurrentPage}" Value="Trends">
+                            <Setter Property="ContentTemplate" Value="{StaticResource TrendsTemplate}" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding CurrentPage}" Value="Maintenance">
+                            <Setter Property="ContentTemplate" Value="{StaticResource MaintenanceTemplate}" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding CurrentPage}" Value="Settings">
+                            <Setter Property="ContentTemplate" Value="{StaticResource SettingsTemplate}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ContentControl.Style>
+        </ContentControl>
+        </ScrollViewer>
+    </Grid>
+    </Border>
+</Window>

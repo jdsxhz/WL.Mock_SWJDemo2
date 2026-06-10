@@ -1,0 +1,48 @@
+<UserControl x:Class="ScadaTemplate.Views.TrendsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:ScadaTemplate.Controls">
+    <Grid Margin="24,8,24,24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="90" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <UniformGrid Columns="4" Rows="1">
+            <Border BorderBrush="#355D82" BorderThickness="1" Background="#62122D45" Margin="0,0,12,0">
+                <TextBlock Text="{Binding TankTemperature1, StringFormat=罐1温度 {0:0.0}°C}" FontSize="22" Foreground="{StaticResource AccentCyanBrush}" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Border>
+            <Border BorderBrush="#355D82" BorderThickness="1" Background="#62122D45" Margin="0,0,12,0">
+                <TextBlock Text="{Binding TankTemperature2, StringFormat=罐2温度 {0:0.0}°C}" FontSize="22" Foreground="{StaticResource AccentCyanBrush}" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Border>
+            <Border BorderBrush="#355D82" BorderThickness="1" Background="#62122D45" Margin="0,0,12,0">
+                <TextBlock Text="{Binding FilterLevel1, StringFormat=滤器1 {0:0}%}" FontSize="22" Foreground="#8DFFBE" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Border>
+            <Border BorderBrush="#355D82" BorderThickness="1" Background="#62122D45">
+                <TextBlock Text="{Binding FilterLevel2, StringFormat=滤器2 {0:0}%}" FontSize="22" Foreground="#8DFFBE" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Border>
+        </UniformGrid>
+
+        <controls:TechPanel Grid.Row="1" Header="趋势曲线">
+            <Grid Margin="8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="42" />
+                </Grid.RowDefinitions>
+                <Border BorderBrush="#2B668B" BorderThickness="1" Background="#50112A42">
+                    <controls:TrendChart Temperature1="{Binding TankTemperature1}"
+                                         Temperature2="{Binding TankTemperature2}"
+                                         Level1="{Binding FilterLevel1}"
+                                         Level2="{Binding FilterLevel2}"
+                                         Hours="{Binding SelectedTrendHours}" />
+                </Border>
+                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding TrendRangeText}" Foreground="#83DDF1" VerticalAlignment="Center" Margin="0,0,18,0" />
+                    <Button Content="1小时" Command="{Binding SelectTrendRangeCommand}" CommandParameter="1" Style="{StaticResource TechButtonStyle}" />
+                    <Button Content="8小时" Command="{Binding SelectTrendRangeCommand}" CommandParameter="8" Style="{StaticResource TechButtonStyle}" />
+                    <Button Content="24小时" Command="{Binding SelectTrendRangeCommand}" CommandParameter="24" Style="{StaticResource TechButtonStyle}" />
+                    <Button Content="导出" Command="{Binding ExportTrendCommand}" Style="{StaticResource TechButtonStyle}" />
+                </StackPanel>
+            </Grid>
+        </controls:TechPanel>
+    </Grid>
+</UserControl>

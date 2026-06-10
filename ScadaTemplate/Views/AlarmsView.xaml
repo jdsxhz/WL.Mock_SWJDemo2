@@ -1,0 +1,75 @@
+<UserControl x:Class="ScadaTemplate.Views.AlarmsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:ScadaTemplate.Controls">
+    <Grid Margin="24,8,24,24">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="330" />
+        </Grid.ColumnDefinitions>
+        <controls:TechPanel Header="报警记录">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="42" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <DockPanel>
+                    <Button Content="全部确认" Command="{Binding AcknowledgeAlarmCommand}" Style="{StaticResource TechButtonStyle}" DockPanel.Dock="Right" />
+                    <TextBlock Text="当前报警与历史记录" FontSize="16" FontWeight="Bold" VerticalAlignment="Center" />
+                </DockPanel>
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="36" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid Background="#4A123A5A">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160" />
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="90" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="时间" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" />
+                        <TextBlock Grid.Column="1" Text="来源" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" />
+                        <TextBlock Grid.Column="2" Text="内容" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" />
+                        <TextBlock Grid.Column="3" Text="确认" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" />
+                    </Grid>
+                    <ItemsControl Grid.Row="1" ItemsSource="{Binding Messages}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Height="42" BorderBrush="#2B668B" BorderThickness="0,0,0,1">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="160" />
+                                            <ColumnDefinition Width="100" />
+                                            <ColumnDefinition />
+                                            <ColumnDefinition Width="90" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding TimeText}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        <TextBlock Grid.Column="1" Text="{Binding Name}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        <TextBlock Grid.Column="2" Text="{Binding Content}" VerticalAlignment="Center" />
+                                        <Button Grid.Column="3"
+                                                Content="确认"
+                                                Command="{Binding DataContext.AcknowledgeSingleAlarmCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                CommandParameter="{Binding}"
+                                                Style="{StaticResource TechButtonStyle}"
+                                                Width="72"
+                                                Height="28" />
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
+            </Grid>
+        </controls:TechPanel>
+        <controls:TechPanel Grid.Column="1" Header="报警统计" Margin="16,0,0,0">
+            <StackPanel>
+                <TextBlock Text="严重报警 1" FontSize="20" Foreground="#FF6B6B" FontWeight="Bold" Margin="0,8" />
+                <TextBlock Text="预警报警 2" FontSize="20" Foreground="#FCD640" FontWeight="Bold" Margin="0,8" />
+                <TextBlock Text="已确认报警" FontSize="20" Foreground="#83DDF1" FontWeight="Bold" Margin="0,8" />
+                <TextBlock Text="{Binding OperationMessage}" TextWrapping="Wrap" Margin="0,26,0,0" />
+            </StackPanel>
+        </controls:TechPanel>
+    </Grid>
+</UserControl>
